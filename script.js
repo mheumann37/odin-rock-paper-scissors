@@ -5,7 +5,7 @@ function getComputerChoice() {
 }
 
 function getHumanChoice() {
-    let choice = Number(prompt("Enter a number:\n1: rock, 2: paper, or 3: scissors"));
+    let choice = Number(prompt("Enter a number:\n1: ROCK, 2: PAPER, or 3: SCISSORS"));
     console.log(choice); //Debugging
     return processChoice(choice);
 }
@@ -13,19 +13,41 @@ function getHumanChoice() {
 function processChoice(number) {
     switch (number) {
         case 1:
-            return "rock";
+            return "ROCK";
             break;
         case 2:
-            return "paper";
+            return "PAPER";
             break;
         case 3:
-            return "scissors";
+            return "SCISSORS";
             break;
     }
 }
 
-let computerChoice = getComputerChoice();
-console.log(computerChoice); //Debugging
+function playRound(humanChoice, computerChoice) {
+    humanChoice = humanChoice.toUpperCase();
+    if (humanChoice === computerChoice) {
+        console.log("You tied! Both players selected " + humanChoice + ".");
+    } else if (humanChoice === "ROCK" && computerChoice === "SCISSORS"
+        || humanChoice === "PAPER" && computerChoice === "ROCK"
+        || humanChoice === "SCISSORS" && computerChoice === "PAPER") {
+            console.log("You win! " + humanChoice + " beats " + computerChoice + ".");
+            ++humanScore;
+    } else {
+            console.log("You lose! " + computerChoice + " beats " + humanChoice + ".");
+            ++computerScore;
+    }
+}
 
-let humanChoice = getHumanChoice();
-console.log(humanChoice); //Debugging
+const computerSelection = getComputerChoice();
+console.log(computerSelection); //Debugging
+
+const humanSelection = getHumanChoice();
+console.log(humanSelection); //Debugging
+
+let computerScore = 0;
+let humanScore = 0;
+
+playRound(humanSelection, computerSelection);
+console.log(humanScore); // Debugging
+console.log(computerScore); // Debugging
