@@ -1,53 +1,60 @@
-function getComputerChoice() {
-    let choice = Math.floor(Math.random() * 3) + 1;
-    console.log(choice); //Debugging
-    return processChoice(choice);
-}
-
 function getHumanChoice() {
-    let choice = Number(prompt("Enter a number:\n1: ROCK, 2: PAPER, or 3: SCISSORS"));
-    console.log(choice); //Debugging
+    let choice = prompt("Enter your choice: rock, paper, or scissors.");
+    choice = choice.toLowerCase();
     return processChoice(choice);
 }
 
-function processChoice(number) {
-    switch (number) {
+function processChoice(choice) {
+    switch (choice) {
         case 1:
-            return "ROCK";
+            return "rock";
             break;
         case 2:
-            return "PAPER";
+            return "paper";
             break;
         case 3:
-            return "SCISSORS";
+            return "scissors";
+            break;
+        case "rock":
+            return 1;
+        case "paper":
+            return 2;
+            break;
+        case "scissors":
+            return 3;
             break;
     }
+}
+
+function getComputerChoice() {
+    //Math.random() is a static method that generates a random floating-point number between 0 (inclusive) and 1 (exclusive). Multiplying the random number by 3 ensures it's between 0 (inclusive) and 3 (exclusive). Math.floor() returns the greatest integer less than or equal to the given number. Adding 1 to the random number shifts the range from 0,1,2 to 1,2,3.
+    let choice = Math.floor(Math.random() * 3) + 1;
+    return choice;
 }
 
 function playRound(humanChoice, computerChoice) {
-    humanChoice = humanChoice.toUpperCase();
-    if (humanChoice === computerChoice) {
-        console.log("You tied! Both players selected " + humanChoice + ".");
-    } else if (humanChoice === "ROCK" && computerChoice === "SCISSORS"
-        || humanChoice === "PAPER" && computerChoice === "ROCK"
-        || humanChoice === "SCISSORS" && computerChoice === "PAPER") {
-            console.log("You win! " + humanChoice + " beats " + computerChoice + ".");
-            ++humanScore;
-    } else {
-            console.log("You lose! " + computerChoice + " beats " + humanChoice + ".");
-            ++computerScore;
+    let result = (humanChoice - computerChoice) % 3;
+    console.log(result); //Debugging
+    if (result == 0) {
+        console.log("You tied - both players selected " + processChoice(humanChoice) + ".");
+    } else if (result == -2 || result == 1) {
+        console.log("You win - " + processChoice(humanChoice) + " beats " + processChoice(computerChoice) + ".");
+        ++humanScore;
+    } else if (result == 2 || result == -1) {
+        console.log("You lose - " + processChoice(computerChoice) + " beats " + processChoice(humanChoice) + ".");
+        ++computerScore;
     }
 }
-
-const computerSelection = getComputerChoice();
-console.log(computerSelection); //Debugging
 
 const humanSelection = getHumanChoice();
 console.log(humanSelection); //Debugging
 
-let computerScore = 0;
+const computerSelection = getComputerChoice();
+console.log(computerSelection); //Debugging
+
 let humanScore = 0;
+let computerScore = 0;
 
 playRound(humanSelection, computerSelection);
-console.log(humanScore); // Debugging
-console.log(computerScore); // Debugging
+console.log("Human score: " + humanScore); // Debugging
+console.log("Computer score: " + computerScore); //Debugging
