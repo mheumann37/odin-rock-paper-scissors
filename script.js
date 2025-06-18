@@ -1,22 +1,10 @@
 function getHumanChoice() {
     let choice = prompt("Enter your choice: rock, paper, or scissors.");
     choice = choice.toLowerCase();
-    return processChoice(choice);
-}
-
-function processChoice(choice) {
     switch (choice) {
-        case 1:
-            return "rock";
-            break;
-        case 2:
-            return "paper";
-            break;
-        case 3:
-            return "scissors";
-            break;
         case "rock":
             return 1;
+            break;
         case "paper":
             return 2;
             break;
@@ -32,29 +20,55 @@ function getComputerChoice() {
     return choice;
 }
 
-function playRound(humanChoice, computerChoice) {
-    let result = (humanChoice - computerChoice) % 3;
-    console.log(result); //Debugging
-    if (result == 0) {
-        console.log("You tied - both players selected " + processChoice(humanChoice) + ".");
-    } else if (result == -2 || result == 1) {
-        console.log("You win - " + processChoice(humanChoice) + " beats " + processChoice(computerChoice) + ".");
-        ++humanScore;
-    } else if (result == 2 || result == -1) {
-        console.log("You lose - " + processChoice(computerChoice) + " beats " + processChoice(humanChoice) + ".");
-        ++computerScore;
+function processChoice(choice) {
+    switch (choice) {
+        case 1:
+            return "rock";
+            break;
+        case 2:
+            return "paper";
+            break;
+        case 3:
+            return "scissors";
+            break;
     }
 }
 
-const humanSelection = getHumanChoice();
-console.log(humanSelection); //Debugging
+function playGame() {
+    function playRound(humanChoice, computerChoice) {
+        // % Modulus: a % b is the remainder of the integer division of a by b
+        // 5 % 2 is 1, the remainder of 5 divided by 2
+        // 8 % 4 is 0, the remainder of 8 divided by 4
+        let roundResult = (humanChoice - computerChoice) % 3;
+        if (roundResult == 0) {
+            console.log("Draw - both players selected " + processChoice(humanChoice) + ".");
+        } else if (roundResult == -2 || roundResult == 1) {
+            console.log("You win - " + processChoice(humanChoice) + " beats " + processChoice(computerChoice) + ".");
+            ++humanScore;
+        } else if (roundResult == 2 || roundResult == -1) {
+            console.log("You lose - " + processChoice(computerChoice) + " beats " + processChoice(humanChoice) + ".");
+            ++computerScore;
+        }
+    }
+    
+    let humanScore = 0;
+    let computerScore = 0;
 
-const computerSelection = getComputerChoice();
-console.log(computerSelection); //Debugging
+    for (let i = 1; i < 6; i++) {
+        const humanSelection = getHumanChoice();
+        const computerSelection = getComputerChoice();
+        playRound(humanSelection, computerSelection);
+    }
 
-let humanScore = 0;
-let computerScore = 0;
+    console.log("Final Score - Human: " + humanScore + " | Computer: " + computerScore);
 
-playRound(humanSelection, computerSelection);
-console.log("Human score: " + humanScore); // Debugging
-console.log("Computer score: " + computerScore); //Debugging
+    if (humanScore == computerScore) {
+        console.log("Tie game. Try again!");
+    } else if (humanScore > computerScore) {
+        console.log("You won the game. Congratulations!");
+    } else if (humanScore < computerScore) {
+        console.log("You lost the game. Better luck next time!");
+    }
+}
+
+playGame();
